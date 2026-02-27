@@ -86,7 +86,7 @@ class EDGARClient:
         url = SUBMISSIONS_URL.format(cik=padded_cik)
         logger.info("Fetching submissions for CIK %s", cik)
 
-        async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient(follow_redirects=True) as client:
             response = await self._rate_limited_get(client, url)
             data = response.json()
 
@@ -114,7 +114,7 @@ class EDGARClient:
             f"{accession_nodash}/{accession}-index.json"
         )
 
-        async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient(follow_redirects=True) as client:
             try:
                 response = await self._rate_limited_get(client, index_json_url)
                 data = response.json()
@@ -166,7 +166,7 @@ class EDGARClient:
         logger.info("Fetching filing HTML from %s", url)
         chunks = []
 
-        async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient(follow_redirects=True) as client:
             # Respect rate limit before starting the stream
             now = asyncio.get_event_loop().time()
             elapsed = now - self._last_request_time
@@ -195,7 +195,7 @@ class EDGARClient:
         url = XBRL_FACTS_URL.format(cik=padded_cik)
         logger.info("Fetching XBRL facts for CIK %s", cik)
 
-        async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient(follow_redirects=True) as client:
             response = await self._rate_limited_get(client, url)
             data = response.json()
 
