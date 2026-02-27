@@ -42,7 +42,7 @@ class FilingWatcher:
         """Poll the RSS feed once and return new filing events."""
         new_filings = []
 
-        async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient(follow_redirects=True) as client:
             response = await client.get(
                 EDGAR_RSS_URL,
                 headers={"User-Agent": config.sec_user_agent},
